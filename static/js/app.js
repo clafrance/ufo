@@ -18,10 +18,23 @@ function loadTable(data) {
 		var row = tbody.append("tr");
 
 		Object.entries(ufo).forEach(([key, value]) => {
-			row.append("td").text(value).attr("id", key);
+			row.append("td").text(value);
+			// row.append("td").text(value).attr("id", key);
 		});
 	});
 };
+
+
+// Find unique Cities
+var select = d3.select("#city");
+
+cities = tableData.map(u => u.city);
+cities = [...new Set(cities)];
+cities.sort().unshift("");
+
+cities.forEach((city) => {
+	select.append("option").text(city).attr("id", city);
+});
 
 
 // Initial data loading
@@ -34,17 +47,26 @@ submit.on("click", function() {
 	// Prevent the page from refreshing
 	d3.event.preventDefault();
 
-	// Get the input value
-	var inputValue = d3.select("#datetime").property("value");
+	// Get the input date
+	const inputDate = d3.select("#datetime").property("value");
 	var filteredData = [];
 
-	// Get the filtered data
-	if (inputValue) {
-		filteredData = tableData.filter(u => u.datetime == inputValue);
+	// Get the data filtered by date
+	if (inputDate) {
+		filteredData = tableData.filter(u => u.datetime === inputDate);
 		emptyTable();
 	} else {
 		filteredData = tableData;
 	};
+
+	// Get the data filtered by city
+	const inputCity = d3.select('#city option:checked').text();
+	if (inputCity) {
+		filteredData = filteredData.filter(u => u.city === inputCity);
+		console.log(filteredData);
+	};
+
+
 
 	// Load the filtered data into the table
 	loadTable(filteredData);
