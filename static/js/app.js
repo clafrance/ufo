@@ -2,8 +2,11 @@
 // from data.js
 var tableData = data;
 
+const properties = ["City", "State", "Country", "Shape"];
+
 // Select the submit button
 var submit = d3.select("#filter-btn");
+
 
 // Function to empty the table
 function emptyTable() {
@@ -25,15 +28,64 @@ function loadTable(data) {
 };
 
 
-// Find unique Cities
-var select = d3.select("#city");
+// Find unique Cities, States, Countries, Shapes
+// var selectCity = d3.select("#city");
+var cities = [];
+var states = [];
+var countries = [];
+var shapes = [];
 
-cities = tableData.map(u => u.city);
+tableData.forEach(ufo => {
+	cities.push(ufo.city);
+	states.push(ufo.state);
+	countries.push(ufo.country);
+	shapes.push(ufo.shape);
+});
+
 cities = [...new Set(cities)];
 cities.sort().unshift("");
 
-cities.forEach((city) => {
-	select.append("option").text(city).attr("id", city);
+states = [...new Set(states)];
+states.sort().unshift("");
+
+countries = [...new Set(countries)];
+countries.sort().unshift("");
+
+shapes = [...new Set(shapes)];
+shapes.sort().unshift("");
+
+
+// Create the dropdowns for cities, states, countries, shapes
+properties.forEach((p) => {
+
+	switch (p) {
+		case "City":
+			var select = d3.select("#city");
+			cities.forEach((city) => {
+				select.append("option").text(city).attr("id", city);
+			});
+			break;
+		case "State":
+			var select = d3.select("#state");
+			states.forEach((state) => {
+				select.append("option").text(state.toUpperCase()).attr("id", state);
+			});
+			break;
+		case "Country":
+			var select = d3.select("#country");
+			countries.forEach((country) => {
+				select.append("option").text(country).attr("id", country);
+			});
+			break;
+		case "Shape":
+			var select = d3.select("#shape");
+			shapes.forEach((shape) => {
+				select.append("option").text(shape).attr("id", shape);
+			});
+			break;
+		default:
+			console.log("Sorry");
+	};
 });
 
 
@@ -44,12 +96,17 @@ loadTable(tableData);
 // Button click handler 
 submit.on("click", function() {
 
+	var filteredData = [];
+
 	// Prevent the page from refreshing
 	d3.event.preventDefault();
 
-	// Get the input date
+	// Get the input date, city, state, country, shape
 	const inputDate = d3.select("#datetime").property("value");
-	var filteredData = [];
+	const inputCity = d3.select('#city option:checked').text();
+	const inputState = d3.select('#state option:checked').text().toLowerCase();
+	const inputCountry = d3.select('#country option:checked').text();
+	const inputShape = d3.select('#shape option:checked').text();
 
 	// Get the data filtered by date
 	if (inputDate) {
@@ -60,12 +117,28 @@ submit.on("click", function() {
 	};
 
 	// Get the data filtered by city
-	const inputCity = d3.select('#city option:checked').text();
 	if (inputCity) {
+		emptyTable();
 		filteredData = filteredData.filter(u => u.city === inputCity);
-		console.log(filteredData);
 	};
 
+	// Get the data filtered by state
+	if (inputState) {
+		emptyTable();
+		filteredData = filteredData.filter(u => u.state === inputState);
+	};
+
+	// Get the data filtered by country
+	if (inputCountry) {
+		emptyTable();
+		filteredData = filteredData.filter(u => u.country === inputCountry);
+	};
+
+	// Get the data filtered by shape
+	if (inputShape) {
+		emptyTable();
+		filteredData = filteredData.filter(u => u.shape === inputShape);
+	};
 
 
 	// Load the filtered data into the table
