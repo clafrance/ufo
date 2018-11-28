@@ -42,6 +42,7 @@ tableData.forEach(ufo => {
 	shapes.push(ufo.shape);
 });
 
+// get unique values and sort for cities, states, countries, shapes
 cities = [...new Set(cities)];
 cities.sort().unshift("");
 
@@ -61,25 +62,25 @@ properties.forEach((p) => {
 	switch (p) {
 		case "City":
 			var select = d3.select("#city");
-			cities.forEach((city) => {
+			cities.forEach(city => {
 				select.append("option").text(city).attr("id", city);
 			});
 			break;
 		case "State":
 			var select = d3.select("#state");
-			states.forEach((state) => {
+			states.forEach(state => {
 				select.append("option").text(state.toUpperCase()).attr("id", state);
 			});
 			break;
 		case "Country":
 			var select = d3.select("#country");
-			countries.forEach((country) => {
-				select.append("option").text(country).attr("id", country);
+			countries.forEach(country => {
+				select.append("option").text(country.toUpperCase()).attr("id", country);
 			});
 			break;
 		case "Shape":
 			var select = d3.select("#shape");
-			shapes.forEach((shape) => {
+			shapes.forEach(shape => {
 				select.append("option").text(shape).attr("id", shape);
 			});
 			break;
@@ -105,38 +106,35 @@ submit.on("click", function() {
 	const inputDate = d3.select("#datetime").property("value");
 	const inputCity = d3.select('#city option:checked').text();
 	const inputState = d3.select('#state option:checked').text().toLowerCase();
-	const inputCountry = d3.select('#country option:checked').text();
+	const inputCountry = d3.select('#country option:checked').text().toLowerCase();
 	const inputShape = d3.select('#shape option:checked').text();
+
+	emptyTable();
 
 	// Get the data filtered by date
 	if (inputDate) {
 		filteredData = tableData.filter(u => u.datetime === inputDate);
-		emptyTable();
 	} else {
 		filteredData = tableData;
 	};
 
 	// Get the data filtered by city
 	if (inputCity) {
-		emptyTable();
 		filteredData = filteredData.filter(u => u.city === inputCity);
 	};
 
 	// Get the data filtered by state
 	if (inputState) {
-		emptyTable();
 		filteredData = filteredData.filter(u => u.state === inputState);
 	};
 
 	// Get the data filtered by country
 	if (inputCountry) {
-		emptyTable();
 		filteredData = filteredData.filter(u => u.country === inputCountry);
 	};
 
 	// Get the data filtered by shape
 	if (inputShape) {
-		emptyTable();
 		filteredData = filteredData.filter(u => u.shape === inputShape);
 	};
 
