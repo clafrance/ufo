@@ -1,4 +1,4 @@
-# ufo
-Load and search UFO data using Javascript - D3
+# UFO
+A web application built with Javascript D3 library.  It displays UFO data with search function.
 
-Use Google Chrome to view the website for best experience.
+Use Google Chrome to view the website for better experience.
