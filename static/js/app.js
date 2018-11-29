@@ -11,7 +11,7 @@ var submit = d3.select("#filter-btn");
 // Function to empty the table
 function emptyTable() {
 	d3.select("#ufo-table > tbody").selectAll('tr').remove();
-};
+}
 
 
 // Function to load data into the table
@@ -25,7 +25,7 @@ function loadTable(data) {
 			// row.append("td").text(value).attr("id", key);
 		});
 	});
-};
+}
 
 
 // Find unique Cities, States, Countries, Shapes
